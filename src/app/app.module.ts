@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {
   IPublicClientApplication,
   PublicClientApplication,
@@ -25,7 +25,9 @@ import {
   MsalModule,
   MsalInterceptor,
 } from '@azure/msal-angular';
-import { environment } from '../environments/environment'
+import { environment } from '../environments/environment';
+import { HomeComponent } from './home/home.component';
+import { ProfileComponent } from './profile/profile.component'
 
 const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
 
@@ -75,7 +77,9 @@ export function MsalGuardConfigurationFactory(): MsalGuardConfiguration {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -83,7 +87,7 @@ export function MsalGuardConfigurationFactory(): MsalGuardConfiguration {
     MsalModule,
   ],
   providers: [
-    provideHttpClient(),
+    provideHttpClient(withInterceptorsFromDi()),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: MsalInterceptor,
